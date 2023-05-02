@@ -1,2 +1,0 @@
-TELEGRAM_API_KEY = "6156973617:AAFUlu9yR1GawbOewXQ8wXzpAYIMSWNGpRk"
-known_keys = []

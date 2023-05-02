@@ -9,7 +9,9 @@
         "beautifiers": ["Prettier", "Pretty Diff", "JS-Beautify", "ESLint"]
     },
     "Python": {
-        "beautifiers": ["Black", "YAPF"]
+        "beautifiers": ["Black", "YAPF"],
+		"wrap_line_length": 150,
+		"indent_style": "tab"
     },
     "TypeScript": {
         "beautifiers": [

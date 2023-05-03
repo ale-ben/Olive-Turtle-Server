@@ -5,6 +5,7 @@ from telegram.ext import (
     ContextTypes,
     CommandHandler,
 )
+from datetime import datetime, timedelta
 
 # First level menu
 SELECTING_ACTION = "AS"
@@ -17,6 +18,25 @@ CHAT = "SC"
 
 # Shortcut for ConversationHandler.END
 END = ConversationHandler.END
+
+
+def authenticate(update: Update, context: ContextTypes.DEFAULT_TYPE):
+	auth_data = context.chat_data.get("auth")
+	if auth_data and auth_data < datetime.now() + timedelta(minutes=30):
+		# Authenticated less than 30 minutes ago
+		return True
+	else:
+		uid = Update.effective_user.id
+		cid = Update.effective_chat.id
+
+		if uid in context.bot_data["authorized"]["users"]:
+			return True
+		if cid in context.bot_data["authorized"]["chats"]:
+			return True
+
+		# TODO: Keep going...
+
+		return False
 
 
 async def stop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
@@ -36,9 +56,7 @@ async def end(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
 	return END
 
 
-async def select_type(update: Update,
-                      context: ContextTypes.DEFAULT_TYPE):
-	print("SEL TYPE ---------------------------------")
+async def select_type(update: Update, context: ContextTypes.DEFAULT_TYPE):
 	buttons = [
 	    [
 	        InlineKeyboardButton(text="USER", callback_data=USER),
@@ -73,17 +91,15 @@ async def permissions_grant(update: Update,
 	await select_type(update, context)
 	return SELECTING_TYPE
 
+
 async def permissions_menu(update: Update,
                            context: ContextTypes.DEFAULT_TYPE) -> str:
 	# if await authenticate(update, context):
 	text = "You can grant or revoke access to this bot to a specific user or a specific chat.\n" "To abort, simply type /stop."
 
-	buttons = [
-	    [
-	        InlineKeyboardButton(text="Grant access",
-	                             callback_data=GRANT_ACCESS)
-	    ]
-	]
+	buttons = [[
+	    InlineKeyboardButton(text="Grant access", callback_data=GRANT_ACCESS)
+	]]
 	keyboard = InlineKeyboardMarkup(buttons)
 	await update.message.reply_text(text=text, reply_markup=keyboard)
 	return SELECTING_ACTION
@@ -98,9 +114,9 @@ def get_permission_hanler():
 	                                 pattern="^" + GRANT_ACCESS + "$"),
 	        ],
 	        SELECTING_TYPE: [
-				CallbackQueryHandler(add_user, pattern="^" + USER + "$"),
+	            CallbackQueryHandler(add_user, pattern="^" + USER + "$"),
 	            CallbackQueryHandler(add_chat, pattern="^" + CHAT + "$"),
-			],
+	        ],
 	    },
 	    fallbacks=[CommandHandler("stop", stop)],
 	)

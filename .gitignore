@@ -56,3 +56,5 @@ Temporary Items
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,platformio,macos
 /Olive-Turtle/docs
 __pycache__
+/telegram_bot/telegram_bot/configuration.py
+/telegram_bot/telegram_bot/config.json

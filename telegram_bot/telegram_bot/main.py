@@ -16,7 +16,7 @@ from modules.permissions import get_permission_hanler
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    level=logging.DEBUG)
+    level=logging.INFO)
 
 
 # async def authenticate(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -42,6 +42,9 @@ if __name__ == "__main__":
 	    configuration.TELEGRAM_API_KEY).build()
 
 	application.add_handler(CommandHandler("start", start))
+
+	with open("config.json", "r") as f: 
+		application.bot_data["permissions"] = json.load(f)
 
 	perm_handler = get_permission_hanler()
 	application.add_handler(perm_handler)

@@ -29,6 +29,11 @@ services:
             - influxdb_backup:/var/lib/backup
         environment:
             - TZ=Europe/Rome
+            - DOCKER_INFLUXDB_INIT_USERNAME=$INFLUXDB_USERNAME
+            - DOCKER_INFLUXDB_INIT_PASSWORD=$INFLUXDB_PASSWORD
+            - DOCKER_INFLUXDB_INIT_ORG=$INFLUXDB_ORG
+            - DOCKER_INFLUXDB_INIT_BUCKET=$INFLUXDB_BUCKET
+            - DOCKER_INFLUXDB_INIT_MODE=setup
         healthcheck:
             test: ["CMD", "influx", "ping"]
             interval: 30s
@@ -50,8 +55,8 @@ services:
             - TZ=Europe/Rome
             - INFLUXDB_V2_URL=$INFLUXDB_HOST
             - INFLUXDB_V2_TOKEN=$TELEGRAF_INFLUXDB_TOKEN
-            - INFLUXDB_V2_ORG=$TELEGRAF_INFLUXDB_ORG
-            - INFLUXDB_V2_BUCKET=$TELEGRAF_INFLUXDB_BUCKET
+            - INFLUXDB_V2_ORG=$INFLUXDB_ORG
+            - INFLUXDB_V2_BUCKET=$INFLUXDB_BUCKET
             - MQTT_CLIENT_ID=telegraf
             - MQTT_ADDRESS=$MQTT_HOST
             - MQTT_USER=$TELEGRAF_MQTT_USERNAME

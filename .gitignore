@@ -58,3 +58,7 @@ Temporary Items
 __pycache__
 /telegram_bot/telegram_bot/configuration.py
 /telegram_bot/telegram_bot/config.json
+/IoTS
+/docker/notes.md
+/docker/mosquitto/credentials.txt
+/docker/.env

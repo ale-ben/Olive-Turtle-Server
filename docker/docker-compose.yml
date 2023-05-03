@@ -11,8 +11,8 @@ services:
         volumes:
             - mosquitto_data:/mosquitto/data
             - mosquitto_log:/mosquitto/log
-            - ./mosquitto/config:/mosquitto/config
-            - ./mosquitto/credentials.txt:/mosquitto/credentials.txt
+            - $MQTT_ROOT_FOLDER/config:/mosquitto/config
+            - $MQTT_ROOT_FOLDER/credentials.txt:/mosquitto/credentials.txt
         environment:
             - TZ=Europe/Rome
     influxdb:
@@ -45,7 +45,7 @@ services:
         networks:
             - iot_net
         volumes:
-            - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
+            - $TELEGRAF_ROOT_FOLDER/telegraf.conf:/etc/telegraf/telegraf.conf
         environment:
             - TZ=Europe/Rome
             - INFLUXDB_V2_URL=$INFLUXDB_HOST
